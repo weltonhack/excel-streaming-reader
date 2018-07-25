@@ -151,7 +151,9 @@ public class StreamingSheetReader implements Iterable<Row> {
                         || "true".equals(isHiddenAttr.getValue()));
                 currentRow = new StreamingRow(rowIndex, isHidden);
                 currentColNum = firstColNum;
-            } else if (!skipEvents && "col".equals(tagLocalName)) {
+            } else if (skipEvents) {
+                return;
+            } else if ("col".equals(tagLocalName)) {
                 Attribute isHiddenAttr = startElement.getAttributeByName(new QName("hidden"));
                 boolean isHidden = isHiddenAttr != null && ("1".equals(isHiddenAttr.getValue())
                         || "true".equals(isHiddenAttr.getValue()));
@@ -164,7 +166,7 @@ public class StreamingSheetReader implements Iterable<Row> {
                         hiddenColumns.add(columnIndex);
                     }
                 }
-            } else if (!skipEvents && "c".equals(tagLocalName)) {
+            } else if ("c".equals(tagLocalName)) {
                 Attribute ref = startElement.getAttributeByName(new QName("r"));
 
                 if (ref != null) {
@@ -196,7 +198,7 @@ public class StreamingSheetReader implements Iterable<Row> {
                 } else {
                     currentCell.setCellStyle(stylesTable.getStyleAt(0));
                 }
-            } else if (!skipEvents && "dimension".equals(tagLocalName)) {
+            } else if ("dimension".equals(tagLocalName)) {
                 Attribute refAttr = startElement.getAttributeByName(new QName("ref"));
                 String ref = refAttr != null ? refAttr.getValue() : null;
                 if (ref != null) {
@@ -218,7 +220,7 @@ public class StreamingSheetReader implements Iterable<Row> {
                         }
                     }
                 }
-            } else if (!skipEvents && "f".equals(tagLocalName)) {
+            } else if ("f".equals(tagLocalName)) {
                 if (currentCell != null) {
                     currentCell.setType("str");
                 }
