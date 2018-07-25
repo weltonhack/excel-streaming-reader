@@ -56,6 +56,10 @@ public class StreamingSheet implements Sheet {
   public Iterator<Row> rowIterator() {
     return reader.iterator();
   }
+  
+  public Iterator<Row> iterator(int rowFilteringGroups, int rowFilteringGroup) {
+    return reader.iterator(rowFilteringGroups, rowFilteringGroup);
+  }
 
   /**
    * {@inheritDoc}
